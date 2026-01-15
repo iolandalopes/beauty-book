@@ -1,0 +1,14 @@
+{
+    "name": "iolandalopes/beauty-booking",
+    "autoload": {
+        "psr-4": {
+            "App": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Iolanda Lopes"
+        }
+    ],
+    "require": {}
+}
