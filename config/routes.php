@@ -10,5 +10,6 @@ $router = new Router();
 
 $router->map('GET', '/login', [AuthenticationController::class, 'index']);
 $router->map('POST', '/login', [AuthenticationController::class, 'login']);
+$router->map('POST', '/logout', [AuthenticationController::class, 'logout']);
 
 $router->map('GET', '/', [HomeController::class, 'index']);
