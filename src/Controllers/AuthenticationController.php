@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Support\FlashMessage;
 use Laminas\Diactoros\Response\RedirectResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -19,7 +20,9 @@ class AuthenticationController extends BaseController
 
     public function index(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->render('authentication/login.html.twig');
+        $flashMessage = FlashMessage::get();
+
+        return $this->render('authentication/login.html.twig', compact('flashMessage'));
     }
 
     public function login(ServerRequestInterface $request): ResponseInterface
@@ -33,14 +36,16 @@ class AuthenticationController extends BaseController
             $user = $this->userModel->getUser($email);
 
             if (! password_verify($password, $user['password'])) {
-                return $this->render('authentication/login.html.twig', [
-                    'error' => 'Credenciais inválidas.'
-                ]);
+                FlashMessage::set('error', 'Credenciais inválidas.');
+                FlashMessage::set('old_email', $email);
+
+                return new RedirectResponse('/login');
             }
         } catch (\Exception $e) {
-            return $this->render('authentication/login.html.twig', [
-                'error' => 'Credenciais inválidas.'
-            ]);
+            FlashMessage::set('error', 'Credenciais inválidas.');
+            FlashMessage::set('old_email', $email);
+
+            return new RedirectResponse('/login');
         }
 
         return new RedirectResponse('/');
