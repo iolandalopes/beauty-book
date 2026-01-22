@@ -48,6 +48,12 @@ class AuthenticationController extends BaseController
             return new RedirectResponse('/login');
         }
 
+        $_SESSION['auth'] = [
+            'id'    => $user['id'],
+            'email' => $user['email'],
+            'name'  => $user['name'] ?? null,
+        ];
+
         return new RedirectResponse('/');
     }
 }
