@@ -14,6 +14,10 @@ $request =  ServerRequestFactory::fromGlobals(
     $_FILES
 );
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $response = $router->dispatch($request);
 
 (new SapiEmitter)->emit($response);
