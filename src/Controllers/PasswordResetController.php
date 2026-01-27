@@ -5,11 +5,13 @@ namespace App\Controllers;
 use App\Models\PasswordReset;
 use App\Models\User;
 use App\Support\FlashMessage;
+use App\Support\FormValidation;
 use App\Support\Mailer;
 use App\Support\Token;
 use Laminas\Diactoros\Response\RedirectResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Respect\Validation\Validator;
 
 class PasswordResetController extends BaseController
 {
@@ -73,6 +75,24 @@ class PasswordResetController extends BaseController
     {
         $token = $request->getParsedBody()['token'] ?? '';
         $newPassword = $request->getParsedBody()['password'] ?? '';
+
+        $validator = new FormValidation();
+        $errors = $validator::validate(
+            ['password' => $newPassword],
+            [
+                'password' => Validator::stringType()
+                    ->notEmpty()
+                    ->length(6, null)
+                    ->setTemplate('O campo senha deve ter pelo menos 6 caracteres!')
+            ]
+        );
+
+        if (! empty($errors)) {
+            return $this->render('authentication/reset_password.html.twig', [
+                'token' => $token,
+                'errors' => $errors
+            ]);
+        }
 
         $passwordReset = new PasswordReset();
 
