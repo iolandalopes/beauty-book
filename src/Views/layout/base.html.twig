@@ -38,50 +38,50 @@
 <body class="font-inter bg-gray-50">
     <div class="flex h-screen">
         <!-- Sidebar -->
-        <aside class="w-64 bg-gradient-to-b from-purple-900 to-purple-800 text-white flex flex-col shadow-xl">
-            <div class="p-6 border-b border-purple-700">
+        <aside class="w-64 bg-gradient-to-b from-sky-900 to-sky-800 text-white flex flex-col shadow-xl">
+            <div class="p-6 border-b border-sky-700">
                 <div class="flex items-center gap-3">
                     <span class="material-icons text-3xl">spa</span>
                     <div>
                         <h1 class="text-xl font-bold">BeautyBook</h1>
-                        <p class="text-xs text-purple-200">Manicure System</p>
+                        <p class="text-xs text-sky-200">Manicure System</p>
                     </div>
                 </div>
             </div>
 
             <nav class="flex-1 p-4 space-y-2">
-                <a href="dashboard.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-purple-700 text-white">
+                <a href="dashboard.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-sky-700 text-white">
                     <span class="material-icons">dashboard</span>
                     <span>Dashboard</span>
                 </a>
                 
-                <a href="/manicures" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-purple-700 transition">
+                <a href="/manicures" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-sky-700 transition">
                     <span class="material-icons">people</span>
                     <span>Manicures</span>
                 </a>
                 
-                <a href="clientes/index.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-purple-700 transition">
+                <a href="clientes/index.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-sky-700 transition">
                     <span class="material-icons">person</span>
                     <span>Clientes</span>
                 </a>
                 
-                <a href="horarios/index.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-purple-700 transition">
+                <a href="horarios/index.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-sky-700 transition">
                     <span class="material-icons">schedule</span>
                     <span>Horários</span>
                 </a>
                 
-                <a href="agendamentos/index.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-purple-700 transition">
+                <a href="agendamentos/index.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-sky-700 transition">
                     <span class="material-icons">event</span>
                     <span>Agendamentos</span>
                 </a>
                 
-                <a href="estoque/index.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-purple-700 transition">
+                <a href="estoque/index.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-sky-700 transition">
                     <span class="material-icons">inventory_2</span>
                     <span>Estoque</span>
                 </a>
             </nav>
 
-            <div class="p-4 border-t border-purple-700">
+            <div class="p-4 border-t border-sky-700">
                 <form method="post" action="/logout" onsubmit="return confirm('Deseja realmente sair?');">
                     <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-red-600 hover:bg-red-700 transition font-medium">
                         <span class="material-icons">logout</span>
@@ -201,12 +201,12 @@
                     const cliente = clientes.find(c => c.id == a.clienteId)?.nome || 'N/A';
                     const manicure = manicures.find(m => m.id == a.manicureId)?.nome || 'N/A';
                     return `
-                        <div class="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+                        <div class="flex items-center justify-between p-3 bg-sky-50 rounded-lg">
                             <div class="flex-1">
                                 <p class="font-medium text-gray-900">${cliente}</p>
                                 <p class="text-sm text-gray-600">${manicure} • ${new Date(a.data).toLocaleDateString('pt-BR')} ${a.horario}</p>
                             </div>
-                            <span class="material-icons text-purple-400">arrow_forward_ios</span>
+                            <span class="material-icons text-sky-400">arrow_forward_ios</span>
                         </div>
                     `;
                 }).join('');
