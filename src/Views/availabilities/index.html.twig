@@ -1,0 +1,139 @@
+{% extends "layout/base.html.twig" %}
+{% block content %}
+    <div class="flex-1 overflow-auto">
+        <!-- Main Content -->
+        <main class="flex-1 overflow-auto">
+            <div class="p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-3xl font-bold text-gray-800">Horários</h2>
+                        <p class="text-gray-600 text-sm mt-1">Gerenciar horários de trabalho</p>
+                    </div>
+                    <a href="form.html" class="bg-sky-500 hover:bg-sky-700 text-white px-6 py-2 rounded-lg flex items-center gap-2 font-medium transition-all duration-300">
+                        <span class="material-icons text-xl">add</span>
+                        Novo Horário
+                    </a>
+                </div>
+
+                <!-- Formulário de Busca -->
+                <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 mb-6">
+                    <div class="p-4">
+                        <div class="flex gap-2">
+                            <div class="relative flex-1">
+                                <input 
+                                    type="text" 
+                                    id="search-input"
+                                    placeholder="Buscar horário por manicure, dia da semana ou horário..."
+                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all duration-200"
+                                    onkeypress="handleEnterKey(event)"
+                                >
+                                <span class="material-icons absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">search</span>
+                            </div>
+                            <button 
+                                onclick="filtrarHorarios()" 
+                                class="bg-sky-600 hover:bg-sky-700 text-white px-6 py-2 rounded-lg flex items-center gap-2 font-medium transition-all duration-200"
+                            >
+                                <span class="material-icons text-sm">search</span>
+                                Buscar
+                            </button>
+                            <button 
+                                onclick="limparBusca()" 
+                                class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg flex items-center gap-1 font-medium transition-all duration-200"
+                            >
+                                <span class="material-icons text-sm">clear</span>
+                                Limpar
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2">Digite sua busca e clique no botão "Buscar" ou pressione Enter</p>
+                    </div>
+                </div>
+
+                <div id="horarios-list" class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden">
+                    <table class="w-full">
+                        <thead class="bg-sky-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Dia da Semana</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Início</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Fim</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="horarios-tbody">
+                        </tbody>
+                    </table>
+                    <div id="horarios-empty" class="p-8 text-center text-gray-500">
+                        <span class="material-icons text-5xl mb-3 block text-gray-300">schedule</span>
+                        <p class="mb-4">Nenhum horário cadastrado</p>
+                        <a href="/availabilities/form" class="bg-sky-500 hover:bg-sky-700 text-white px-4 py-2 rounded-lg inline-flex items-center gap-2 transition-all duration-300">
+                            <span class="material-icons">add</span>
+                            Cadastrar primeiro horário
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Paginação -->
+                <div id="pagination" class="flex justify-center mt-6">
+                    <div class="flex items-center gap-2">
+                        <button onclick="irParaPrimeiraPagina()" class="px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-sky-50 text-sm font-medium transition-all duration-200 flex items-center gap-1" id="btn-primeira">
+                            <span class="material-icons text-sm">first_page</span>
+                            Primeira
+                        </button>
+                        <button onclick="irParaPaginaAnterior()" class="px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-sky-50 text-sm font-medium transition-all duration-200 flex items-center gap-1" id="btn-anterior">
+                            <span class="material-icons text-sm">chevron_left</span>
+                            Anterior
+                        </button>
+                        <span class="px-4 py-2 text-sm text-gray-600" id="info-pagina">
+                            Página 1 de 1
+                        </span>
+                        <button onclick="irParaProximaPagina()" class="px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-sky-50 text-sm font-medium transition-all duration-200 flex items-center gap-1" id="btn-proxima">
+                            Próxima
+                            <span class="material-icons text-sm">chevron_right</span>
+                        </button>
+                        <button onclick="irParaUltimaPagina()" class="px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-sky-50 text-sm font-medium transition-all duration-200 flex items-center gap-1" id="btn-ultima">
+                            Última
+                            <span class="material-icons text-sm">last_page</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Confirmação -->
+    <div id="modal-confirmacao" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div class="p-6">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                        <span class="material-icons text-red-600 text-2xl">warning</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">Confirmar Exclusão</h3>
+                        <p class="text-sm text-gray-500">Esta ação não pode ser desfeita</p>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <p class="text-gray-700">Tem certeza que deseja excluir este registro?</p>
+                    <p class="text-sm text-gray-500 mt-2">Todos os dados relacionados a ele serão removidos permanentemente.</p>
+                </div>
+                
+                <div class="flex gap-3 justify-end">
+                    <button 
+                        onclick="fecharModal()" 
+                        class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg font-medium transition-all duration-200"
+                    >
+                        Cancelar
+                    </button>
+                    <button 
+                        onclick="confirmarExclusao()" 
+                        class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-all duration-200 flex items-center gap-2"
+                    >
+                        <span class="material-icons text-sm">delete</span>
+                        Excluir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
