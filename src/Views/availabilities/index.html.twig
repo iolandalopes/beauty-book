@@ -67,19 +67,28 @@
                                 {{ availability.slot_duration }} min
                             </td>
 
-                            <td class="px-6 py-4 text-right">
-                                <form
-                                    method="POST"
-                                    action="/availabilities/{{ availability.id }}/delete"
-                                    onsubmit="return confirm('Deseja remover este horário?')"
-                                >
-                                    <button
-                                        type="submit"
-                                        class="text-red-600 hover:text-red-800 font-medium"
-                                    >
-                                        Remover
-                                    </button>
-                                </form>
+                            <td class="ml-auto px-6 py-4 text-right">
+                                <div class="flex items-center gap-3">
+                                    <a href="/availabilities/{{ availability.id }}/edit"
+                                        class="text-sky-600 hover:text-sky-800"
+                                        title="Editar disponibilidade"
+                                        aria-label="Editar disponibilidade">
+                                        <span class="material-icons text-[20px] align-middle">edit</span>
+                                    </a>
+                                    
+                                    <!-- Remover -->
+                                    <form method="POST"
+                                        action="/availabilities/{{ availability.id }}/delete"
+                                        onsubmit="return confirm('Deseja realmente remover este horário?')">
+                                        <button
+                                            type="submit"
+                                            class="text-red-600 hover:text-red-800"
+                                            title="Remover disponibilidade"
+                                            aria-label="Remover disponibilidade">
+                                            <span class="material-icons text-[20px] align-middle">delete</span>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     {% endfor %}
