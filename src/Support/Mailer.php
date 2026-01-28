@@ -50,7 +50,7 @@ class Mailer
                             <tr>
                                 <td style="background-color:#7e22ce; padding:20px 30px; color:#ffffff;">
                                     <h1 style="margin:0; font-size:20px; font-weight:600;">
-                                        BeautyBook
+                                        AgendaPRO
                                     </h1>
                                 </td>
                             </tr>
@@ -99,7 +99,7 @@ class Mailer
                                         Este é um e-mail automático. Por favor, não responda.
                                     </p>
                                     <p style="margin:0;">
-                                        © ' . date('Y') . ' BeautyBook. Todos os direitos reservados.
+                                        © ' . date('Y') . ' AgendaPRO. Todos os direitos reservados.
                                     </p>
                                 </td>
                             </tr>
