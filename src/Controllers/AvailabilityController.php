@@ -13,4 +13,10 @@ class AvailabilityController extends BaseController
         AuthMiddleware::handle();
         return $this->render('availabilities/index.html.twig');
     }
+
+    public function create(ServerRequestInterface $request): ResponseInterface
+    {
+        AuthMiddleware::handle();
+        return $this->render('availabilities/form.html.twig');
+    }
 }
