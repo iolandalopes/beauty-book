@@ -45,8 +45,8 @@ class BaseModel
         $this->connection->update($this->table, $data);
     }
 
-    public function delete(array $data): void
+    public function delete(int $id): void
     {
-        $this->connection->delete($this->table, $data);
+        $this->connection->delete($this->table, ['id' => $id]);
     }
 }

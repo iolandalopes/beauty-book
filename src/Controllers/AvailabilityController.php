@@ -102,4 +102,14 @@ class AvailabilityController extends BaseController
 
         return new RedirectResponse('/availabilities');
     }
+
+    public function destroy(ServerRequestInterface $request): ResponseInterface
+    {
+        AuthMiddleware::handle();
+
+        $id = $request->getAttribute('id');
+        $this->availability->delete($id);
+
+        return new RedirectResponse('/availabilities');
+    }
 }

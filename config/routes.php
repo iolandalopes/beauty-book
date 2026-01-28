@@ -24,3 +24,4 @@ $router->map('GET', '/', [HomeController::class, 'index']);
 $router->map('GET', '/availabilities', [AvailabilityController::class, 'index']);
 $router->map('GET', '/availabilities/create', [AvailabilityController::class, 'create']);
 $router->map('POST', '/availabilities', [AvailabilityController::class, 'store']);
+$router->map('DELETE', '/availabilities/{id}', [AvailabilityController::class, 'destroy']);
