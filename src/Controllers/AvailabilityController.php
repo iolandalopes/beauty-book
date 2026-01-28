@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Middlewares\AuthMiddleware;
 use App\Models\Availability;
 use App\Support\FormValidation;
+use Laminas\Diactoros\Response\RedirectResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Respect\Validation\Validator;
@@ -22,7 +23,13 @@ class AvailabilityController extends BaseController
     public function index(ServerRequestInterface $request): ResponseInterface
     {
         AuthMiddleware::handle();
-        return $this->render('availabilities/index.html.twig');
+
+        $userId = $_SESSION['auth']['id'];
+        $availabilities = $this->availability->allByUser($userId);
+
+        return $this->render('availabilities/index.html.twig', [
+            'availabilities' => $availabilities
+        ]);
     }
 
     public function create(ServerRequestInterface $request): ResponseInterface
@@ -93,6 +100,6 @@ class AvailabilityController extends BaseController
             ...$data,
         ]);
 
-        return $this->render('availabilities/form.html.twig');
+        return new RedirectResponse('/availabilities');
     }
 }

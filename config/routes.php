@@ -22,5 +22,5 @@ $router->map('POST', '/reset-password', [PasswordResetController::class, 'resetP
 $router->map('GET', '/', [HomeController::class, 'index']);
 
 $router->map('GET', '/availabilities', [AvailabilityController::class, 'index']);
-$router->map('GET', '/availabilities/form', [AvailabilityController::class, 'create']);
+$router->map('GET', '/availabilities/create', [AvailabilityController::class, 'create']);
 $router->map('POST', '/availabilities', [AvailabilityController::class, 'store']);
