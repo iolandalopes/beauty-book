@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\AuthenticationController;
+use App\Controllers\AvailabilityController;
 use App\Controllers\HomeController;
 use App\Controllers\PasswordResetController;
 use League\Route\Router;
@@ -19,3 +20,7 @@ $router->map('GET', '/reset-password', [PasswordResetController::class, 'resetPa
 $router->map('POST', '/reset-password', [PasswordResetController::class, 'resetPassword']);
 
 $router->map('GET', '/', [HomeController::class, 'index']);
+
+$router->map('GET', '/availabilities', [AvailabilityController::class, 'index']);
+$router->map('GET', '/availabilities/create', [AvailabilityController::class, 'create']);
+$router->map('POST', '/availabilities', [AvailabilityController::class, 'store']);

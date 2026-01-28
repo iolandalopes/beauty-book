@@ -2,10 +2,11 @@
 
 namespace App\Controllers;
 
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
-use Twig\Extension\DebugExtension;
+use App\Views\Twig\AppExtension;
 use Laminas\Diactoros\Response\HtmlResponse;
+use Twig\Environment;
+use Twig\Extension\DebugExtension;
+use Twig\Loader\FilesystemLoader;
 
 class BaseController
 {
@@ -22,6 +23,7 @@ class BaseController
         ]);
 
         $this->twig->addExtension(new DebugExtension());
+        $this->twig->addExtension(new AppExtension());
     }
 
     public function render(string $template, array $data = []): HtmlResponse
