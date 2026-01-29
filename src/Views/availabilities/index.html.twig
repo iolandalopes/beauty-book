@@ -1,0 +1,102 @@
+{% extends "layout/base.html.twig" %}
+{% block content %}
+
+<main class="flex-1 overflow-auto p-8">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-800">Disponibilidade</h1>
+            <p class="text-gray-600 mt-1">
+                Gerencie seus horários disponíveis para atendimento
+            </p>
+        </div>
+
+        <a
+            href="/availabilities/create"
+            class="bg-sky-500 hover:bg-sky-700 text-white px-6 py-3 rounded-lg font-medium transition"
+        >
+            + Novo Horário
+        </a>
+    </div>
+
+    <!-- Flash messages -->
+    {% if session.success %}
+        <div class="mb-6 bg-green-100 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
+            {{ session.success }}
+        </div>
+    {% endif %}
+
+    {% if session.error %}
+        <div class="mb-6 bg-red-100 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
+            {{ session.error }}
+        </div>
+    {% endif %}
+
+    <!-- Table -->
+    {% if availabilities is empty %}
+        <div class="bg-white p-10 rounded-xl border text-center text-gray-500">
+            Nenhum horário cadastrado ainda.
+        </div>
+    {% else %}
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <table class="w-full">
+                <thead class="bg-gray-50 text-gray-600 text-sm">
+                    <tr>
+                        <th class="px-6 py-4 text-left">Dia da Semana</th>
+                        <th class="px-6 py-4 text-left">Horário</th>
+                        <th class="px-6 py-4 text-left">Duração</th>
+                        <th class="px-6 py-4 text-right">Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y">
+                    {% for availability in availabilities %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 font-medium text-gray-800">
+                                {{ weekdayLabel(availability.weekday) }}
+                            </td>
+
+                            <td class="px-6 py-4 text-gray-700">
+                                {{ availability.start_time|slice(0,5) }}
+                                —
+                                {{ availability.end_time|slice(0,5) }}
+                            </td>
+
+                            <td class="px-6 py-4 text-gray-700">
+                                {{ availability.slot_duration }} min
+                            </td>
+
+                            <td class="ml-auto px-6 py-4 text-right">
+                                <div class="flex items-center gap-3">
+                                    <a href="/availabilities/{{ availability.id }}"
+                                        class="text-sky-600 hover:text-sky-800"
+                                        title="Editar disponibilidade"
+                                        aria-label="Editar disponibilidade">
+                                        <span class="material-icons text-[20px] align-middle">edit</span>
+                                    </a>
+                                    
+                                    <!-- Remover -->
+                                    <form method="POST"
+                                        action="/availabilities/{{ availability.id }}"
+                                        onsubmit="return confirm('Deseja realmente remover este horário?')">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button
+                                            type="submit"
+                                            class="text-red-600 hover:text-red-800"
+                                            title="Remover disponibilidade"
+                                            aria-label="Remover disponibilidade">
+                                            <span class="material-icons text-[20px] align-middle">delete</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</main>
+
+{% endblock %}

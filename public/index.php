@@ -18,6 +18,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+if($request->getMethod() === 'POST' && isset($_POST['_method'])) {
+    $request = $request->withMethod($_POST['_method']);
+}
+
 $response = $router->dispatch($request);
 
 (new SapiEmitter)->emit($response);
