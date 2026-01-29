@@ -24,6 +24,7 @@
                 method="POST"
                 action="{{ isEdit ? '/availabilities/' ~ availability.id : '/availabilities' }}"
             >
+                <input type="hidden" name="_csrf" value="{{ csrf_token }}">
                 {% if isEdit %}
                     <input type="hidden" name="_method" value="PUT">
                 {% endif %}
