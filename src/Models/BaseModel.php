@@ -40,13 +40,24 @@ class BaseModel
         $this->connection->insert($this->table, $data);
     }
 
-    public function update(array $data): void
+    public function update(array $data, int $id): void
     {
-        $this->connection->update($this->table, $data);
+        $this->connection->update($this->table, $data, ['id' => $id]);
     }
 
     public function delete(int $id): void
     {
         $this->connection->delete($this->table, ['id' => $id]);
+    }
+
+    public function find(int $id): array|false
+    {
+        return $this->connection->createQueryBuilder()
+            ->select('*')
+            ->from($this->table)
+            ->where('id = :id')
+            ->setParameter('id', $id)
+            ->executeQuery()
+            ->fetchAssociative();
     }
 }

@@ -112,4 +112,30 @@ class AvailabilityController extends BaseController
 
         return new RedirectResponse('/availabilities');
     }
+
+    public function edit(ServerRequestInterface $request): ResponseInterface
+    {
+        AuthMiddleware::handle();
+
+        $id = $request->getAttribute('id');
+        $availability = $this->availability->find($id);
+
+        return $this->render('availabilities/form.html.twig', [
+            'availability' => $availability,
+            'isEdit' => true,
+        ]);
+    }
+
+    public function update(ServerRequestInterface $request, array $id): ResponseInterface
+    {
+        AuthMiddleware::handle();
+
+        $this->availability->find($id['id']);
+        $data = $request->getParsedBody();
+        unset($data['_method']);
+
+        $this->availability->update($data, $id['id']);
+
+        return new RedirectResponse('/availabilities');
+    }
 }
