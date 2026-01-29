@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Middlewares\AuthMiddleware;
 use App\Models\Availability;
+use App\Support\Authorization;
 use App\Support\Csrf;
 use App\Support\FormValidation;
 use Laminas\Diactoros\Response\RedirectResponse;
@@ -113,6 +114,7 @@ class AvailabilityController extends BaseController
     public function destroy(ServerRequestInterface $request): ResponseInterface
     {
         AuthMiddleware::handle();
+        Authorization::isOwner($request->getAttribute('id'), Availability::class);
 
         $data = $request->getParsedBody();
         Csrf::validate($data['_csrf'] ?? null);
@@ -125,6 +127,7 @@ class AvailabilityController extends BaseController
     public function edit(ServerRequestInterface $request): ResponseInterface
     {
         AuthMiddleware::handle();
+        Authorization::isOwner($request->getAttribute('id'), Availability::class);
 
         $id = $request->getAttribute('id');
         $availability = $this->availability->find($id);
@@ -139,6 +142,7 @@ class AvailabilityController extends BaseController
     public function update(ServerRequestInterface $request, array $id): ResponseInterface
     {
         AuthMiddleware::handle();
+        Authorization::isOwner($request->getAttribute('id'), Availability::class);
 
         $data = $request->getParsedBody();
         Csrf::validate($data['_csrf'] ?? null);

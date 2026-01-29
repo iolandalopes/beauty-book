@@ -50,11 +50,12 @@ class BaseModel
         $this->connection->delete($this->table, ['id' => $id]);
     }
 
-    public function find(int $id): array|false
+    public static function find(int $id): array|false
     {
-        return $this->connection->createQueryBuilder()
+        $self = new static();
+        return $self->connection->createQueryBuilder()
             ->select('*')
-            ->from($this->table)
+            ->from($self->table)
             ->where('id = :id')
             ->setParameter('id', $id)
             ->executeQuery()
