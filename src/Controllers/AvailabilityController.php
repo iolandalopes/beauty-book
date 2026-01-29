@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Middlewares\AuthMiddleware;
 use App\Models\Availability;
+use App\Support\Csrf;
 use App\Support\FormValidation;
 use Laminas\Diactoros\Response\RedirectResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -28,20 +29,26 @@ class AvailabilityController extends BaseController
         $availabilities = $this->availability->allByUser($userId);
 
         return $this->render('availabilities/index.html.twig', [
-            'availabilities' => $availabilities
+            'availabilities' => $availabilities,
+            'csrf_token' => Csrf::token(),
         ]);
     }
 
     public function create(ServerRequestInterface $request): ResponseInterface
     {
         AuthMiddleware::handle();
-        return $this->render('availabilities/form.html.twig');
+
+        return $this->render('availabilities/form.html.twig', [
+            'csrf_token' => Csrf::token(),
+        ]);
     }
 
     public function store(ServerRequestInterface $request): ResponseInterface
     {
         AuthMiddleware::handle();
         $data = $request->getParsedBody();
+        Csrf::validate($data['_csrf'] ?? null);
+
         $data = [
             'weekday'       => (int)$data['weekday'] ?? '',
             'start_time'    => $data['start_time'] ?? '',
@@ -107,8 +114,10 @@ class AvailabilityController extends BaseController
     {
         AuthMiddleware::handle();
 
-        $id = $request->getAttribute('id');
-        $this->availability->delete($id);
+        $data = $request->getParsedBody();
+        Csrf::validate($data['_csrf'] ?? null);
+
+        $this->availability->delete($request->getAttribute('id'));
 
         return new RedirectResponse('/availabilities');
     }
@@ -123,6 +132,7 @@ class AvailabilityController extends BaseController
         return $this->render('availabilities/form.html.twig', [
             'availability' => $availability,
             'isEdit' => true,
+            'csrf_token' => Csrf::token(),
         ]);
     }
 
@@ -130,9 +140,12 @@ class AvailabilityController extends BaseController
     {
         AuthMiddleware::handle();
 
-        $this->availability->find($id['id']);
         $data = $request->getParsedBody();
+        Csrf::validate($data['_csrf'] ?? null);
+
+        $this->availability->find($id['id']);
         unset($data['_method']);
+        unset($data['_csrf']);
 
         $this->availability->update($data, $id['id']);
 
