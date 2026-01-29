@@ -2,7 +2,7 @@
 
 namespace App\Support;
 
-class Auth
+class Authentication
 {
     public static function check(): bool
     {

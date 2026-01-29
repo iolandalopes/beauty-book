@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\User;
-use App\Support\Auth;
+use App\Support\Authentication;
 use App\Support\FlashMessage;
 use Laminas\Diactoros\Response\RedirectResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -60,7 +60,7 @@ class AuthenticationController extends BaseController
 
     public function logout(ServerRequestInterface $request): ResponseInterface
     {
-        Auth::logout();
+        Authentication::logout();
         return new RedirectResponse('/login');
     }
 }
