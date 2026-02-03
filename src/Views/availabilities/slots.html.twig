@@ -1,0 +1,22 @@
+{% extends "layout/base.html.twig" %}
+{% block content %}
+
+<h2 class="text-xl font-semibold mb-4">
+    Slots disponíveis — {{ weekdayLabel(availability.weekday) }}
+</h2>
+
+{% if slots is empty %}
+    <p class="text-gray-500">Nenhum horário disponível.</p>
+{% else %}
+    <ul class="grid grid-cols-3 gap-3">
+        {% for slot in slots %}
+            <li>
+                <a href="/appointments/create?availability={{ availability.id }}&date={{ date }}&start={{ slot.start }}"
+                   class="block text-center bg-sky-500 text-white py-2 rounded hover:bg-sky-700">
+                    {{ slot.start }} – {{ slot.end }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}

@@ -6,6 +6,9 @@ class Availability extends BaseModel
 {
     public string $table = "availabilities";
 
+    public string $start_time;
+    public string $end_time;
+
     /**
      * Verifica se existe conflito de horário
      */
